@@ -1,2 +1,2 @@
 # Poise
-Sports injury prevention and prehab site
+Sport injury prevention app — landing page & waitlist.
