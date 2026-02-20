@@ -19,7 +19,45 @@
         </nav>
 
         <!-- Hero -->
-        <section class="hero" id="hero"></section>
+        <section class="hero" id="hero">
+            <div class="hero-bg"></div>
+            <div class="hero-grid"></div>
+
+            <p class="hero-tag">Sports injury prevention</p>
+
+            <h1 class="hero-headline">
+                Know your
+                <em>limits</em>
+                <span class="accent-word">before</span>
+            </h1>
+
+            <p class="hero-sub">
+                Poise screens your movement using your phone camera and builds a personalised prehab plan - so you stay on the pitch, not on the sidelines.
+            </p>
+
+            <div class="hero-form" id="waitlist">
+                <input
+                    type="email"
+                    id="hero-email"
+                    placeholder="Your email address"
+                    autocomplete="off"
+                />
+                <button onclick="handleSignup('hero-email', 'hero-success')">
+                    Join the waitlist →
+                </button>
+            </div>
+            <p class="hero-note">No spam. No credit card. Just early access.</p>
+            <p class="success-msg" id="hero-success">✓ You're on the list. We'll be in touch. </p>
+
+            <div class="waitlist-count">
+                <div class="count-dots">
+                    <div class="count-dot"><span>👤</span></div>
+                    <div class="count-dot"><span>👤</span></div>
+                    <div class="count-dot"><span>👤</span></div>
+                </div>
+                <span>Join the athletes already waiting!</span>
+            </div>
+        </section>
 
         <!-- Stats -->
         <div class="stats" id="stats"></div>
