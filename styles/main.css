@@ -1,1 +1,72 @@
-/* styles coming in next commit */
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+/* Reset */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Variables */
+:root {
+    --black: #080808;
+    --white: #f5f2ed;
+    --cream: #ede9e2;
+    --accent: #c8f562;
+    --accent-dark: #a8d442;
+    --mid: #5a5a52;
+    --subtle: #2a2a26;
+}
+
+/* Base */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+}
+
+/* Typography scale */
+h1, h2, h3 {
+    font-family: 'Syne', sans-serif;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+}
+
+p{
+    line-height: 1.7;
+}
+
+a {
+    text-decoration: none;
+    color:inherit;
+}
+
+/* Utility */
+.accent { color: var(--accent); }
+.muted { color: rgba(245, 242, 237, 0.5); }
+.section-tag {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+.section-tag::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 1px;
+    background: var(--accent);
+}
