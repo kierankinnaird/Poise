@@ -511,3 +511,71 @@ nav {
         grid-template-columns: 1fr;
     }
 }
+
+/* Who it's for */
+.who {
+    padding: 6rem 3rem;
+    background: var(--subtle);
+}
+
+.who-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.who-headline {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 3rem;
+}
+
+.who-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.who-card {
+    border: 1px solid rgba(245, 242, 237, 0.08);
+    border-radius: 16px;
+    padding: 1.6rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: border-color 0.2s;
+}
+
+.who-card:hover {
+    border-color: rgba(200, 245, 98, 0.3);
+}
+
+.who-emoji {
+    font-size: 1.8rem;
+}
+
+.who-text {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: rgba(245, 242, 237, 0.75);
+}
+
+.who-text strong {
+    display: block;
+    color: var(--white);
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+}
+
+/* Who mobile */
+@media (max-width: 600px) {
+    .who {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+
+    .who-grid {
+        grid-template-columns: 1fr;
+    }
+}
