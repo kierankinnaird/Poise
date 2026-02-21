@@ -98,7 +98,7 @@ nav {
 }
 
 .nav-cta {
-    font-size: 0.08 rem;
+    font-size: 0.08rem;
     font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -186,7 +186,7 @@ nav {
 .hero-headline em {
     font-style: normal;
     color: transparent;
-    -webkit-text-stroke: 1px rgba(245, 242, 237. 0.4);
+    -webkit-text-stroke: 1px rgba(245, 242, 237, 0.85);
 }
 
 .hero-headline .accent-word {
@@ -346,6 +346,10 @@ nav {
     letter-spacing: -0.02em;
 }
 
+.stat-num span {
+    color: var(--accent);
+}
+
 .stat-label {
     font-size: 0.78rem;
     color: rgba(245, 242, 237, 0.4);
@@ -474,6 +478,16 @@ nav {
 }
 
 .step-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: rgba(200, 245, 98, 0.12);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.04em;
+}
+
+.step-title {
     font-family: 'Syne', sans-serif;
     font-weight: 600;
     font-size: 1.1rem;
