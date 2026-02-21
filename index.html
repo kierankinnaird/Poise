@@ -187,10 +187,34 @@
         </section>
 
         <!-- Bottom CTA -->
-        <section class="cta-bottom" id="cta"></section>
+        <section class="cta-bottom reveal" id="cta">
+            <div class="cta-bottom-bg"></div>
+            <h2 class="cta-bottom-headline">Get early access.</h2>
+            <p class="cta-bottom-sub">
+                Be among the first to screen with Poise and shape 
+                the products as we build it.
+            </p>
+            <div class="cta-bottom-form">
+                <input
+                    type="email"
+                    id="bottom-email"
+                    placeholder="Your email address"
+                    autocomplete="off"
+                />
+                <button onclick="handleSignup('bottom-email', 'bottom-succcess')">
+                    Reserve my spot
+                </button>
+            </div>
+            <p class="success-msg" id="bottom-success">
+                ✓ You're on the list. We'll be in touch.
+            </p>
+        </section>
 
         <!-- Footer -->
-        <footer id="footer"></footer>
+        <footer id="footer">
+            <div class="footer-logo">Poise<span>.</span></div>
+            <p class="footer-copy">© 2026 Poise. All rights reserved.</p>
+        </footer>
 
         <script src="scripts/main.js"></script>
     </body>
