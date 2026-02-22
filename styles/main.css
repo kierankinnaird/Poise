@@ -728,3 +728,9 @@ footer {
     background:#1a1a16;
     color: var(--white);
 }
+
+/* Frequency select */
+.hero-form select#hero-frequency {
+    flex: 1;
+    min-width: 220px;
+}
