@@ -701,3 +701,30 @@ footer {
         align-items: flex-start;
     }
 }
+
+/* Form select */
+.hero-form select {
+    flex: 1;
+    min-width: 180px;
+    background: rgba(245, 242, 237, 0.6);
+    border: 1px solid rgba (245, 242, 237, 0.12);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    padding: 1rem 1.4rem;
+    border-radius: 100px;
+    outline: none;
+    cursor: none;
+    appearance: none;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.hero-form select:focus {
+    border-color: rgba(200, 245, 98, 0.5);
+    background: rgba(245,242,237,0.09);
+}
+
+.hero-form select option{
+    background:#1a1a16;
+    color: var(--white);
+}
