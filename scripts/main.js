@@ -100,6 +100,9 @@ function handleSignup(inputId, successId) {
     const input = document.getElementById(inputId);
     const success = document.getElementById(successId);
     const email = input.value.trim();
+    const sport = document.getElementById('hero-sport')?.value || 'not provided';
+    const frequency = document.getElementById('hero-frequency')?.value || 'not provided';
+    const utm = getUTMParams();
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!regex.test(email)) {
@@ -108,10 +111,30 @@ function handleSignup(inputId, successId) {
         setTimeout(() => {
             input.style.borderColor = '';
             input.placeholder = 'Your email address';
-
         }, 2000);
     }
 
+    // Logging signup data to console for now
+    console.log('New signup:', {
+        email,
+        sport,
+        frequency,
+        utm_source: utm.source,
+        utm_medium: utm.medium,
+        utm_campaign: utm.campaign,
+        timestamp: new Date().toISOString(),
+    });
+
     input.parentElement.style.display = 'none';
     success.style.display = 'block';
+}
+
+/* UTM Tracking */
+function getUTMParams() {
+    const params = new URLSearchParams(window.location.search);
+    return {
+        source: params.get('utm_source') || 'direct',
+        medium: params.get('utm_medium') || 'none',
+        campaign: params.get('utm_campaign') || 'none',
+    };
 }
