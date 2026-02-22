@@ -96,7 +96,7 @@ revealStyles.textContent = `
 document.head.appendChild(revealStyles);
 
 /* Waitlist Form */
-function handleSignup(inputId, successId) {
+async function handleSignup(inputId, successId) {
     const input = document.getElementById(inputId);
     const success = document.getElementById(successId);
     const email = input.value.trim();
@@ -106,28 +106,54 @@ function handleSignup(inputId, successId) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!regex.test(email)) {
-        input.style.borderColor = 'rgba(255, 80, 80, 0.5)';
+        input.style.borderColor = 'rgba(255,80,80,0.5)';
         input.placeholder = 'Please enter a valid email';
         setTimeout(() => {
             input.style.borderColor = '';
-            input.placeholder = 'Your email address';
+            input.placeholder= 'Your email address';
         }, 2000);
         return;
     }
 
-    // Logging signup data to console for now
-    console.log('New signup:', {
-        email,
-        sport,
-        frequency,
-        utm_source: utm.source,
-        utm_medium: utm.medium,
-        utm_campaign: utm.campaign,
-        timestamp: new Date().toISOString(),
-    });
+    const gdprCheckbox = document.getElementById(
+        inputId === 'hero-email' ? 'hero-gdpr' : 'bottom-gdpr'
+    );
 
-    input.parentElement.style.display = 'none';
-    success.style.display = 'block';
+    if (!gdprCheckbox?.checked) {
+        gdprCheckbox.parentElement.style.color = 'rgba(255,80,80,0.7)';
+        setTimeout(() => {
+            gdprCheckbox.parentElement.style.color = '';
+        }, 2000);
+        return;
+    }
+
+    try {
+        await fetch('https://submit.formspark.io/f/Pc2ZiyvaI', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email,
+                sport,
+                frequency,
+                utm_source: utm.source,
+                utm_medium: utm.medium,
+                utm_campaign: utm.campaign,
+                timestamp: new Date().toISOString(),
+            }),
+        });
+
+        input.parentElement.style.display = 'none';
+        success.style.display = 'block';
+
+    } catch (err) {
+        console.error('Signup error:', err);
+        input.style.borderColor = 'rgba(255,80,80,0.5)';
+        input.placeholder = 'Something went wrong, try again';
+        setTimeout(() => {
+            input.style.borderColor = '';
+            input.placeholder = 'Your email address';
+        }, 2000);
+    }
 }
 
 /* UTM Tracking */
