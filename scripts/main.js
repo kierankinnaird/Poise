@@ -130,7 +130,10 @@ async function handleSignup(inputId, successId) {
     try {
         await fetch('https://submit.formspark.io/f/Pc2ZiyvaI', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+             },
             body: JSON.stringify({
                 email,
                 sport,
