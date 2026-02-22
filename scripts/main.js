@@ -49,8 +49,8 @@ cursorStyles.textContent = `
         pointer-events: none;
         z-index: 9999;
         transform: translate(-50%, -50%);
-        transition: widths 0.2s ease, height 0.2s ease;
-        mix-blend-mode: dfference;
+        transition: width 0.2s ease, height 0.2s ease;
+        mix-blend-mode: difference;
     }
     .cursor-ring {
         position: fixed;
@@ -112,6 +112,7 @@ function handleSignup(inputId, successId) {
             input.style.borderColor = '';
             input.placeholder = 'Your email address';
         }, 2000);
+        return;
     }
 
     // Logging signup data to console for now
