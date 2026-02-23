@@ -139,8 +139,21 @@ async function handleSignup(inputId, successId) {
     try {
         const res = await fetch('https://submit.formspark.io/f/Pc2ZiyvaI', {
             method: 'POST',
-            body: formData,
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email,
+                sport,
+                frequency,
+                utm_source: utm.source,
+                utm_medium: utm.medium,
+                utm_campaign: utm.campaign,
+                timestamp: new Date().toISOString(),
+            }),
         });
+
+        input.parentElement.style.display = 'none';
+        success.style.display = 'block';
 
         if (res.ok) {
             input.parentElement.style.display = 'none';
