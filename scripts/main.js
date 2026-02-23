@@ -13,7 +13,7 @@ document.addEventListener('mousemove', e => {
 
 function animateRing() {
     rx += (mx - rx) * 0.12;
-    ry += (my -ry) *0.12;
+    ry += (my - ry) * 0.12;
     ring.style.left = rx + 'px';
     ring.style.top = ry + 'px';
     requestAnimationFrame(animateRing);
@@ -80,7 +80,7 @@ const observer = new IntersectionObserver(entries => {
 
 reveals.forEach(el => observer.observe(el));
 
-/* Reveal styles (injected via JS) */
+/* Reveal styles */
 const revealStyles = document.createElement('style');
 revealStyles.textContent = `
     .reveal {
@@ -97,20 +97,20 @@ document.head.appendChild(revealStyles);
 
 /* Waitlist Form */
 async function handleSignup(inputId, successId) {
-    const input = document.getElementById(inputId);
-    const success = document.getElementById(successId);
-    const email = input.value.trim();
-    const sport = document.getElementById('hero-sport')?.value || 'not provided';
+    const input     = document.getElementById(inputId);
+    const success   = document.getElementById(successId);
+    const email     = input.value.trim();
+    const sport     = document.getElementById('hero-sport')?.value     || 'not provided';
     const frequency = document.getElementById('hero-frequency')?.value || 'not provided';
-    const utm = getUTMParams();
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const utm       = getUTMParams();
+    const regex     = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!regex.test(email)) {
         input.style.borderColor = 'rgba(255,80,80,0.5)';
-        input.placeholder = 'Please enter a valid email';
+        input.placeholder       = 'Please enter a valid email';
         setTimeout(() => {
             input.style.borderColor = '';
-            input.placeholder = 'Your email address';
+            input.placeholder       = 'Your email address';
         }, 2000);
         return;
     }
@@ -127,60 +127,31 @@ async function handleSignup(inputId, successId) {
         return;
     }
 
-    const formData = new FormData();
-    formData.append('email', email);
-    formData.append('sport', sport);
-    formData.append('frequency', frequency);
-    formData.append('utm_source', utm.source);
-    formData.append('utm_medium', utm.medium);
-    formData.append('utm_campaign', utm.campaign);
-    formData.append('timestamp', new Date().toISOString());
+    await fetch('https://submit.formspark.io/f/Pc2ZiyvaI', {
+        method:  'POST',
+        mode:    'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({
+            email,
+            sport,
+            frequency,
+            utm_source:   utm.source,
+            utm_medium:   utm.medium,
+            utm_campaign: utm.campaign,
+            timestamp:    new Date().toISOString(),
+        }),
+    });
 
-    try {
-        const res = await fetch('https://submit.formspark.io/f/Pc2ZiyvaI', {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email,
-                sport,
-                frequency,
-                utm_source: utm.source,
-                utm_medium: utm.medium,
-                utm_campaign: utm.campaign,
-                timestamp: new Date().toISOString(),
-            }),
-        });
-
-        input.parentElement.style.display = 'none';
-        success.style.display = 'block';
-
-        if (res.ok) {
-            input.parentElement.style.display = 'none';
-            success.style.display = 'block';
-        } else {
-            throw new Error('Server error');
-        }
-
-    } catch (err) {
-        console.error('Signup error:', err);
-        input.style.borderColor = 'rgba(255,80,80,0.5)';
-        input.placeholder = 'Something went wrong, try again';
-        setTimeout(() => {
-            input.style.borderColor = '';
-            input.placeholder = 'Your email address';
-        }, 2000);
-    }
+    input.parentElement.style.display = 'none';
+    success.style.display             = 'block';
 }
-
-
 
 /* UTM Tracking */
 function getUTMParams() {
     const params = new URLSearchParams(window.location.search);
     return {
-        source: params.get('utm_source') || 'direct',
-        medium: params.get('utm_medium') || 'none',
+        source:   params.get('utm_source')   || 'direct',
+        medium:   params.get('utm_medium')   || 'none',
         campaign: params.get('utm_campaign') || 'none',
     };
 }
