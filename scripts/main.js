@@ -96,7 +96,7 @@ revealStyles.textContent = `
 document.head.appendChild(revealStyles);
 
 /* Waitlist Form */
-function handleSignup(inputId, successId) {
+async function handleSignup(inputId, successId) {
     const input = document.getElementById(inputId);
     const success = document.getElementById(successId);
     const email = input.value.trim();
@@ -120,43 +120,44 @@ function handleSignup(inputId, successId) {
     );
 
     if (!gdprCheckbox?.checked) {
-        gdprCheckbox.parentElement.style.color = 'rgba(255, 80, 80, 0.7)';
+        gdprCheckbox.parentElement.style.color = 'rgba(255,80,80,0.7)';
         setTimeout(() => {
             gdprCheckbox.parentElement.style.color = '';
         }, 2000);
         return;
     }
 
-    // Build and submit a hidden native form
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = 'https://submit.formspark.io/f/Pc2ZiyvaI';
-    form.target = 'hidden-iframe';
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('sport', sport);
+    formData.append('frequency', frequency);
+    formData.append('utm_source', utm.source);
+    formData.append('utm_medium', utm.medium);
+    formData.append('utm_campaign', utm.campaign);
+    formData.append('timestamp', new Date().toISOString());
 
-    const fields = {
-        email,
-        sport,
-        frequency,
-        utm_source: utm.source,
-        utm_medium: utm.medium,
-        utm_campaign: utm.campaign,
-        timestamp: new Date().toISOString(),
-    };
+    try {
+        const res = await fetch('https://submit.formspark.io/f/Pc2ZiyvaI', {
+            method: 'POST',
+            body: formData,
+        });
 
-    Object.entries(fields).forEach(([key, value]) => {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = key;
-        input.value = value;
-        form.appendChild(input);
-    });
+        if (res.ok) {
+            input.parentElement.style.display = 'none';
+            success.style.display = 'block';
+        } else {
+            throw new Error('Server error');
+        }
 
-    document.body.appendChild(form);
-    form.submit();
-    document.body.removeChild(form);
-
-    input.parentElement.style.display = 'none';
-    success.style.display = 'block';
+    } catch (err) {
+        console.error('Signup error:', err);
+        input.style.borderColor = 'rgba(255,80,80,0.5)';
+        input.placeholder = 'Something went wrong, try again';
+        setTimeout(() => {
+            input.style.borderColor = '';
+            input.placeholder = 'Your email address';
+        }, 2000);
+    }
 }
 
 
