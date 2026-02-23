@@ -96,7 +96,7 @@ revealStyles.textContent = `
 document.head.appendChild(revealStyles);
 
 /* Waitlist Form */
-async function handleSignup(inputId, successId) {
+function handleSignup(inputId, successId) {
     const input = document.getElementById(inputId);
     const success = document.getElementById(successId);
     const email = input.value.trim();
@@ -110,7 +110,7 @@ async function handleSignup(inputId, successId) {
         input.placeholder = 'Please enter a valid email';
         setTimeout(() => {
             input.style.borderColor = '';
-            input.placeholder= 'Your email address';
+            input.placeholder = 'Your email address';
         }, 2000);
         return;
     }
@@ -120,44 +120,46 @@ async function handleSignup(inputId, successId) {
     );
 
     if (!gdprCheckbox?.checked) {
-        gdprCheckbox.parentElement.style.color = 'rgba(255,80,80,0.7)';
+        gdprCheckbox.parentElement.style.color = 'rgba(255, 80, 80, 0.7)';
         setTimeout(() => {
             gdprCheckbox.parentElement.style.color = '';
         }, 2000);
         return;
     }
 
-    try {
-        await fetch('https://submit.formspark.io/f/Pc2ZiyvaI', {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-             },
-            body: JSON.stringify({
-                email,
-                sport,
-                frequency,
-                utm_source: utm.source,
-                utm_medium: utm.medium,
-                utm_campaign: utm.campaign,
-                timestamp: new Date().toISOString(),
-            }),
-        });
+    // Build and submit a hidden native form
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = 'https://submit.formspark.io/f/Pc2ZiyvaI';
+    form.target = 'hidden-iframe';
 
-        input.parentElement.style.display = 'none';
-        success.style.display = 'block';
+    const fields = {
+        email,
+        sport,
+        frequency,
+        utm_source: utm.source,
+        utm_medium: utm.medium,
+        utm_campaign: utm.campaign,
+        timestamp: new Date().toISOString(),
+    };
 
-    } catch (err) {
-        console.error('Signup error:', err);
-        input.style.borderColor = 'rgba(255,80,80,0.5)';
-        input.placeholder = 'Something went wrong, try again';
-        setTimeout(() => {
-            input.style.borderColor = '';
-            input.placeholder = 'Your email address';
-        }, 2000);
-    }
+    Object.entries(fields).forEach(([key, value]) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = value;
+        form.appendChild(input);
+    });
+
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+
+    input.parentElement.style.display = 'none';
+    success.style.display = 'block';
 }
+
+
 
 /* UTM Tracking */
 function getUTMParams() {
