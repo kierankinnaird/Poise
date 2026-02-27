@@ -127,7 +127,7 @@ async function handleSignup(inputId, successId) {
         return;
     }
 
-    await fetch('https://submit.formspark.io/f/Pc2ZiyvaI', {
+    await fetch('https://script.google.com/macros/s/AKfycbyNsIK-wMutbOz9OxAPwoEBW9HH2Wyfge2cGo6tKc9HN84B-6eRGc4nqE7Yn9XPdbNB/exec', {
         method:  'POST',
         mode:    'no-cors',
         headers: { 'Content-Type': 'application/json' },
