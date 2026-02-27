@@ -142,8 +142,15 @@ async function handleSignup(inputId, successId) {
         }),
     });
 
-    input.parentElement.style.display = 'none';
-    success.style.display             = 'block';
+    const form = document.getElementById(
+    inputId === 'hero-email' ? 'waitlist' : 'cta-bottom-form'
+    );
+    if (form) form.style.display = 'none';
+
+    const note = document.querySelector('.hero-note');
+    if (note) note.style.display = 'none';
+
+    success.style.display = 'block' = 'block';
 }
 
 /* UTM Tracking */
