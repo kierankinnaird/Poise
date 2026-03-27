@@ -150,7 +150,7 @@ async function handleSignup(inputId, successId) {
     const note = document.querySelector('.hero-note');
     if (note) note.style.display = 'none';
 
-    success.style.display = 'block' = 'block';
+    success.style.display = 'block';
 }
 
 /* UTM Tracking */
