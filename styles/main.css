@@ -311,8 +311,10 @@ nav {
 /* Hero mobile */
 @media (max-width: 768px) {
     .hero {
-        padding-left:  1.5rem;
-        padding-right: 1.5rem;
+        padding-left:   1.5rem;
+        padding-right:  1.5rem;
+        padding-bottom: 4rem;
+        min-height: auto;
     }
 
     .hero-form {
