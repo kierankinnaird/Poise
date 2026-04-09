@@ -30,7 +30,10 @@ body {
     font-family: 'DM Sans', sans-serif;
     font-weight: 300;
     overflow-x: hidden;
-    cursor: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    body { cursor: none; }
 }
 
 /* Typography scale */
@@ -248,7 +251,7 @@ nav {
     padding: 1rem 2rem;
     border: none;
     border-radius: 100px;
-    cursor: none;
+    cursor: pointer;
     transition: background 0.2s, transform 0.15s;
     white-space: nowrap;
 }
@@ -671,13 +674,79 @@ nav {
     padding: 1rem 2rem;
     border: none;
     border-radius: 100px;
-    cursor: none;
+    cursor: pointer;
     transition: background 0.2s, transform 0.15s;
 }
 
 .cta-bottom-form button:hover {
     background: var(--accent-dark);
     transform: translateY(-1px);
+}
+
+/* Nav LinkedIn */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav-linkedin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(245, 242, 237, 0.5);
+    transition: color 0.2s;
+}
+
+.nav-linkedin:hover {
+    color: var(--accent);
+}
+
+/* Feedback */
+.feedback {
+    text-align: center;
+    padding: 6rem 3rem;
+    background: var(--subtle);
+}
+
+.feedback-headline {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.feedback-sub {
+    font-size: 1rem;
+    color: rgba(245, 242, 237, 0.5);
+    max-width: 420px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+}
+
+.feedback-btn {
+    display: inline-block;
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.9rem 2rem;
+    border-radius: 100px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.feedback-btn:hover {
+    background: var(--accent);
+    color: var(--black);
+}
+
+@media (max-width: 768px) {
+    .feedback {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
 }
 
 /* Footer */
@@ -700,6 +769,35 @@ footer {
 
 .footer-logo span {
     color: var(--accent);
+}
+
+.footer-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.footer-linkedin {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    color: rgba(245, 242, 237, 0.4);
+    transition: color 0.2s;
+}
+
+.footer-linkedin:hover {
+    color: var(--accent);
+}
+
+.footer-privacy {
+    font-size: 0.78rem;
+    color: rgba(245, 242, 237, 0.25);
+    transition: color 0.2s;
+}
+
+.footer-privacy:hover {
+    color: rgba(245, 242, 237, 0.6);
 }
 
 .footer-copy {
@@ -732,6 +830,7 @@ footer {
         padding: 2rem 1.5rem;
         flex-direction: column;
         align-items: flex-start;
+        gap: 0.75rem;
     }
 }
 
@@ -747,7 +846,7 @@ footer {
     padding: 1rem 1.4rem;
     border-radius: 100px;
     outline: none;
-    cursor: none;
+    cursor: pointer;
     appearance: none;
     transition: border-color 0.2s, background 0.2s;
 }

@@ -1,70 +1,71 @@
-/* Custom Cursor */
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursor-ring');
+/* Custom Cursor — desktop only */
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursor-ring');
 
-let mx = 0, my = 0, rx = 0, ry = 0;
+    let mx = 0, my = 0, rx = 0, ry = 0;
 
-document.addEventListener('mousemove', e => {
-    mx = e.clientX;
-    my = e.clientY;
-    cursor.style.left = mx + 'px';
-    cursor.style.top = my + 'px';
-});
+    document.addEventListener('mousemove', e => {
+        mx = e.clientX;
+        my = e.clientY;
+        cursor.style.left = mx + 'px';
+        cursor.style.top = my + 'px';
+    });
 
-function animateRing() {
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) * 0.12;
-    ring.style.left = rx + 'px';
-    ring.style.top = ry + 'px';
-    requestAnimationFrame(animateRing);
+    function animateRing() {
+        rx += (mx - rx) * 0.12;
+        ry += (my - ry) * 0.12;
+        ring.style.left = rx + 'px';
+        ring.style.top = ry + 'px';
+        requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    document.querySelectorAll('button, a, input').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cursor.style.width = '16px';
+            cursor.style.height = '16px';
+            ring.style.width = '50px';
+            ring.style.height = '50px';
+            ring.style.borderColor = 'rgba(200, 245, 98, 0.7)';
+        });
+        el.addEventListener('mouseleave', () => {
+            cursor.style.width = '10px';
+            cursor.style.height = '10px';
+            ring.style.width = '36px';
+            ring.style.height = '36px';
+            ring.style.borderColor = 'rgba(200, 245, 98, 0.4)';
+        });
+    });
+
+    const cursorStyles = document.createElement('style');
+    cursorStyles.textContent = `
+        .cursor {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #c8f562;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s ease, height 0.2s ease;
+            mix-blend-mode: difference;
+        }
+        .cursor-ring {
+            position: fixed;
+            width: 36px;
+            height: 36px;
+            border: 1px solid rgba(200, 245, 98, 0.4);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease, border-color 0.3s;
+        }
+    `;
+    document.head.appendChild(cursorStyles);
 }
-animateRing();
-
-document.querySelectorAll('button, a, input').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-        cursor.style.width = '16px';
-        cursor.style.height = '16px';
-        ring.style.width = '50px';
-        ring.style.height = '50px';
-        ring.style.borderColor = 'rgba(200, 245, 98, 0.7)';
-    });
-    el.addEventListener('mouseleave', () => {
-        cursor.style.width = '10px';
-        cursor.style.height = '10px';
-        ring.style.width = '36px';
-        ring.style.height = '36px';
-        ring.style.borderColor = 'rgba(200, 245, 98, 0.4)';
-    });
-});
-
-/* Cursor styles */
-const cursorStyles = document.createElement('style');
-cursorStyles.textContent = `
-    .cursor {
-        position: fixed;
-        width: 10px;
-        height: 10px;
-        background: #c8f562;
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 9999;
-        transform: translate(-50%, -50%);
-        transition: width 0.2s ease, height 0.2s ease;
-        mix-blend-mode: difference;
-    }
-    .cursor-ring {
-        position: fixed;
-        width: 36px;
-        height: 36px;
-        border: 1px solid rgba(200, 245, 98, 0.4);
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 9998;
-        transform: translate(-50%, -50%);
-        transition: width 0.3s ease, height 0.3s ease, border-color 0.3s;
-    }
-`;
-document.head.appendChild(cursorStyles);
 
 /* Scroll Reveal */
 const reveals = document.querySelectorAll('.reveal');
