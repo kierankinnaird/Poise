@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Poise Dashboard</title>
+        <meta name="robots" content="noindex, nofollow">
+
+        <link rel="stylesheet" href="../styles/main.css"/>
+        <link rel="stylesheet" href="pro.css"/>
+        <link rel="stylesheet" href="dashboard.css"/>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico">
+        <meta name="theme-color" content="#080808">
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    </head>
+    <body>
+
+        <!-- Nav -->
+        <nav id="dash-nav">
+            <a href="/" class="nav-logo">Poise<span>.</span></a>
+            <div class="dash-nav-right">
+                <div class="dash-org-pill" id="org-pill">
+                    <span class="dash-org-name" id="org-name-label">--</span>
+                </div>
+                <button class="dash-code-btn" id="copy-code-btn" title="Copy referral code">
+                    <span id="referral-code-label">--</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                </button>
+                <button class="dash-signout-btn" id="signout-btn">Sign out</button>
+            </div>
+        </nav>
+
+        <!-- Loading state -->
+        <div class="dash-loading" id="dash-loading">
+            <div class="pro-modal-spinner"></div>
+        </div>
+
+        <!-- Client list view -->
+        <main class="dash-main" id="dash-main" style="display:none">
+            <div class="dash-header">
+                <div>
+                    <h1 class="dash-title">Your clients.</h1>
+                    <p class="dash-subtitle" id="member-count-label">-- clients linked</p>
+                </div>
+            </div>
+
+            <div class="dash-empty" id="dash-empty" style="display:none">
+                <p class="dash-empty-title">No clients yet.</p>
+                <p class="dash-empty-sub">Share your referral code and ask clients to enter it in the Poise app under Profile.</p>
+                <div class="dash-empty-code" id="dash-empty-code">--</div>
+            </div>
+
+            <div class="dash-table-wrap" id="dash-table-wrap">
+                <table class="dash-table" id="client-table">
+                    <thead>
+                        <tr>
+                            <th>Client</th>
+                            <th>Latest score</th>
+                            <th>Last screen</th>
+                            <th>Top fault</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="client-tbody"></tbody>
+                </table>
+            </div>
+        </main>
+
+        <!-- Client detail view -->
+        <main class="dash-main dash-detail" id="dash-detail" style="display:none">
+            <button class="dash-back-btn" id="back-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                All clients
+            </button>
+
+            <div class="dash-detail-header">
+                <h2 class="dash-detail-name" id="detail-name">--</h2>
+                <div class="dash-detail-meta" id="detail-meta">-- screens</div>
+            </div>
+
+            <!-- Score trend chart -->
+            <div class="dash-card">
+                <p class="dash-card-label">SCORE OVER TIME</p>
+                <div class="dash-chart-wrap">
+                    <canvas id="score-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- Screen history -->
+            <p class="dash-card-label" style="margin-top:2rem">SCREEN HISTORY</p>
+            <div id="detail-screens"></div>
+        </main>
+
+        <script type="module">
+            import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
+            import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
+            import { getFirestore, collection, query, where, limit, getDocs, orderBy } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+
+            const firebaseConfig = {
+                apiKey: 'AIzaSyAFHL0FWGGR395vL52t_CVQJre3SsxRlMY',
+                authDomain: 'poise-69f8f.firebaseapp.com',
+                projectId: 'poise-69f8f',
+                storageBucket: 'poise-69f8f.firebasestorage.app',
+                messagingSenderId: '848689202046',
+                appId: '1:848689202046:web:8709d9c205d51b254b692f',
+            };
+
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const db = getFirestore(app);
+
+            let currentOrg = null;
+            let membersCache = [];
+            let scoreChart = null;
+
+            // --- Helpers ---
+            const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+            function formatDate(ts) {
+                const d = ts?.toDate ? ts.toDate() : new Date(ts);
+                return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+            }
+
+            function scoreColor(score) {
+                if (score >= 80) return '#c8f562';
+                if (score >= 50) return '#f5a623';
+                return '#ff6b6b';
+            }
+
+            function faultLabel(fault) {
+                const map = {
+                    kneeCave: 'Knee cave', depth: 'Depth', forwardLean: 'Forward lean',
+                    heelRise: 'Heel rise', hipDrop: 'Hip drop', excessiveSway: 'Excessive sway',
+                    armFallForward: 'Arm fall forward', limitedRotation: 'Limited rotation',
+                    excessiveKneeBend: 'Excessive knee bend',
+                };
+                return map[fault] || fault;
+            }
+
+            function severityColor(severity) {
+                if (severity === 'severe') return '#ff6b6b';
+                if (severity === 'moderate') return '#f5a623';
+                return 'rgba(245,242,237,0.35)';
+            }
+
+            // --- Auth guard ---
+            onAuthStateChanged(auth, async (user) => {
+                if (!user) { window.location.href = '/pro/'; return; }
+
+                const orgSnapshot = await getDocs(
+                    query(collection(db, 'organisations'), where('ownerUid', '==', user.uid), limit(1))
+                );
+                if (orgSnapshot.empty) { window.location.href = '/pro/'; return; }
+
+                currentOrg = { id: orgSnapshot.docs[0].id, ...orgSnapshot.docs[0].data() };
+
+                document.getElementById('org-name-label').textContent = currentOrg.name;
+                document.getElementById('referral-code-label').textContent = currentOrg.code;
+                document.getElementById('dash-empty-code').textContent = currentOrg.code;
+
+                await loadMembers();
+            });
+
+            // --- Load members + their latest screen ---
+            async function loadMembers() {
+                const memberSnapshot = await getDocs(
+                    collection(db, 'organisations', currentOrg.id, 'members')
+                );
+
+                const members = memberSnapshot.docs.map(d => ({ uid: d.id, ...d.data() }));
+
+                // Fetch latest screen for each member in parallel.
+                const enriched = await Promise.all(members.map(async (m) => {
+                    try {
+                        const screenSnap = await getDocs(
+                            query(
+                                collection(db, 'users', m.uid, 'screens'),
+                                orderBy('completedAt', 'desc'),
+                                limit(1)
+                            )
+                        );
+                        const latest = screenSnap.empty ? null : screenSnap.docs[0].data();
+                        return { ...m, latest };
+                    } catch (_) {
+                        return { ...m, latest: null };
+                    }
+                }));
+
+                membersCache = enriched;
+                renderClientList(enriched);
+            }
+
+            function renderClientList(members) {
+                document.getElementById('dash-loading').style.display = 'none';
+                document.getElementById('dash-main').style.display = '';
+
+                const count = members.length;
+                document.getElementById('member-count-label').textContent =
+                    `${count} client${count !== 1 ? 's' : ''} linked`;
+
+                if (count === 0) {
+                    document.getElementById('dash-empty').style.display = '';
+                    document.getElementById('dash-table-wrap').style.display = 'none';
+                    return;
+                }
+
+                const tbody = document.getElementById('client-tbody');
+                tbody.innerHTML = '';
+
+                members.forEach((m) => {
+                    const name = m.displayName || 'Unknown';
+                    const score = m.latest?.score ?? '--';
+                    const date = m.latest?.completedAt ? formatDate(m.latest.completedAt) : 'No screens yet';
+                    const topFault = m.latest?.faults?.[0]
+                        ? faultLabel(m.latest.faults[0].type)
+                        : '--';
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="dash-td-name">${name}</td>
+                        <td>
+                            ${score !== '--'
+                                ? `<span class="dash-score-pill" style="color:${scoreColor(score)};border-color:${scoreColor(score)}20">${score}</span>`
+                                : `<span class="dash-muted">--</span>`
+                            }
+                        </td>
+                        <td class="dash-muted">${date}</td>
+                        <td class="dash-muted">${topFault}</td>
+                        <td><button class="dash-view-btn" data-uid="${m.uid}">View</button></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                document.querySelectorAll('.dash-view-btn').forEach(btn => {
+                    btn.addEventListener('click', () => openClientDetail(btn.dataset.uid));
+                });
+            }
+
+            // --- Client detail ---
+            async function openClientDetail(uid) {
+                document.getElementById('dash-main').style.display = 'none';
+                document.getElementById('dash-detail').style.display = '';
+                document.getElementById('detail-screens').innerHTML = '<div class="dash-loading-inline"><div class="pro-modal-spinner" style="width:24px;height:24px;margin:2rem auto"></div></div>';
+
+                const member = membersCache.find(m => m.uid === uid);
+                document.getElementById('detail-name').textContent = member?.displayName || 'Unknown';
+
+                const screenSnap = await getDocs(
+                    query(
+                        collection(db, 'users', uid, 'screens'),
+                        orderBy('completedAt', 'desc')
+                    )
+                );
+
+                const screens = screenSnap.docs.map(d => d.data());
+                document.getElementById('detail-meta').textContent =
+                    `${screens.length} screen${screens.length !== 1 ? 's' : ''}`;
+
+                renderScoreChart(screens);
+                renderScreenHistory(screens);
+            }
+
+            function renderScoreChart(screens) {
+                // Chart wants oldest-first.
+                const sorted = [...screens].reverse();
+                const labels = sorted.map(s => formatDate(s.completedAt));
+                const scores = sorted.map(s => s.score ?? 0);
+
+                if (scoreChart) scoreChart.destroy();
+
+                const ctx = document.getElementById('score-chart').getContext('2d');
+                scoreChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels,
+                        datasets: [{
+                            data: scores,
+                            borderColor: '#c8f562',
+                            backgroundColor: 'rgba(200,245,98,0.06)',
+                            pointBackgroundColor: scores.map(s => scoreColor(s)),
+                            pointRadius: 5,
+                            pointHoverRadius: 7,
+                            tension: 0.3,
+                            fill: true,
+                        }],
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: {
+                                ticks: { color: 'rgba(245,242,237,0.35)', font: { family: 'DM Sans', size: 11 } },
+                                grid: { color: 'rgba(245,242,237,0.06)' },
+                            },
+                            y: {
+                                min: 0,
+                                max: 100,
+                                ticks: { color: 'rgba(245,242,237,0.35)', font: { family: 'DM Sans', size: 11 }, stepSize: 20 },
+                                grid: { color: 'rgba(245,242,237,0.06)' },
+                            },
+                        },
+                    },
+                });
+            }
+
+            function renderScreenHistory(screens) {
+                const container = document.getElementById('detail-screens');
+
+                if (screens.length === 0) {
+                    container.innerHTML = '<p class="dash-muted" style="padding:1rem 0">No screens yet.</p>';
+                    return;
+                }
+
+                container.innerHTML = screens.map(s => {
+                    const faults = s.faults ?? [];
+                    const faultHtml = faults.length === 0
+                        ? '<span class="dash-no-faults">No faults detected</span>'
+                        : faults.map(f => `
+                            <span class="dash-fault-pill" style="border-color:${severityColor(f.severity)}22;color:${severityColor(f.severity)}">
+                                ${faultLabel(f.type)}${f.side ? ` (${f.side})` : ''}
+                            </span>
+                        `).join('');
+
+                    return `
+                        <div class="dash-screen-card">
+                            <div class="dash-screen-header">
+                                <div>
+                                    <span class="dash-screen-type">${s.movementType ?? 'Full screen'}</span>
+                                    <span class="dash-screen-date">${formatDate(s.completedAt)}</span>
+                                </div>
+                                <span class="dash-screen-score" style="color:${scoreColor(s.score ?? 0)}">${s.score ?? '--'}</span>
+                            </div>
+                            <div class="dash-fault-row">${faultHtml}</div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // --- Copy referral code ---
+            document.getElementById('copy-code-btn').addEventListener('click', () => {
+                const code = currentOrg?.code;
+                if (!code) return;
+                navigator.clipboard.writeText(code).then(() => {
+                    const label = document.getElementById('referral-code-label');
+                    const prev = label.textContent;
+                    label.textContent = 'Copied!';
+                    setTimeout(() => { label.textContent = prev; }, 1500);
+                });
+            });
+
+            // --- Back button ---
+            document.getElementById('back-btn').addEventListener('click', () => {
+                document.getElementById('dash-detail').style.display = 'none';
+                document.getElementById('dash-main').style.display = '';
+                if (scoreChart) { scoreChart.destroy(); scoreChart = null; }
+            });
+
+            // --- Sign out ---
+            document.getElementById('signout-btn').addEventListener('click', async () => {
+                await signOut(auth);
+                window.location.href = '/pro/';
+            });
+        </script>
+    </body>
+</html>
