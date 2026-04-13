@@ -155,6 +155,7 @@
 
                 currentOrg = { id: orgSnapshot.docs[0].id, ...orgSnapshot.docs[0].data() };
 
+                console.log('Auth UID:', user.uid, '| Org ownerUid:', currentOrg.ownerUid);
                 document.getElementById('org-name-label').textContent = currentOrg.name;
                 document.getElementById('referral-code-label').textContent = currentOrg.code;
                 document.getElementById('dash-empty-code').textContent = currentOrg.code;
