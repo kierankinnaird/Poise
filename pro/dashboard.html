@@ -182,7 +182,8 @@
                         );
                         const latest = screenSnap.empty ? null : screenSnap.docs[0].data();
                         return { ...m, latest };
-                    } catch (_) {
+                    } catch (e) {
+                        console.error(`Screens load failed for ${m.uid}:`, e.code, e.message);
                         return { ...m, latest: null };
                     }
                 }));
