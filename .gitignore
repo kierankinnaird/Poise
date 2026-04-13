@@ -1,4 +1,6 @@
+.DS_Store
 .DS_store
+._*
 node_modules/
 *.env
 changes.md
