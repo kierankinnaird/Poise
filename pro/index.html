@@ -7,12 +7,321 @@
         <meta name="description" content="Give your athletes and clients a movement screening tool. Track their scores, fault patterns, and progress over time from one dashboard.">
         <meta name="robots" content="index, follow">
         <link rel="canonical" href="https://getpoise.app/pro/">
-
         <link rel="stylesheet" href="../styles/main.css"/>
-        <link rel="stylesheet" href="pro.css"/>
         <link rel="icon" type="image/x-icon" href="/favicon.ico">
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
         <meta name="theme-color" content="#080808">
+
+        <style>
+            /* Nav */
+            .nav-for-athletes {
+                font-size: 0.8rem;
+                color: rgba(245,242,237,0.4);
+                transition: color 0.2s;
+            }
+            .nav-for-athletes:hover { color: rgba(245,242,237,0.8); }
+
+            /* Hero */
+            .pro-hero { padding-bottom: 6rem; }
+
+            .pro-hero-actions {
+                display: flex;
+                align-items: center;
+                gap: 1.2rem;
+                margin-top: 3rem;
+                flex-wrap: wrap;
+                opacity: 0;
+                animation: fadeUp 0.8s ease 0.8s forwards;
+            }
+            .pro-hero-note {
+                margin-top: 1rem;
+                font-size: 0.78rem;
+                color: rgba(245,242,237,0.3);
+                opacity: 0;
+                animation: fadeUp 0.8s ease 1s forwards;
+            }
+            .pro-cta-btn {
+                background: var(--accent);
+                color: var(--black);
+                font-family: 'DM Sans', sans-serif;
+                font-size: 0.95rem;
+                font-weight: 500;
+                padding: 1rem 2.2rem;
+                border: none;
+                border-radius: 100px;
+                cursor: pointer;
+                transition: background 0.2s, transform 0.15s;
+            }
+            .pro-cta-btn:hover { background: var(--accent-dark); transform: translateY(-1px); }
+            .pro-ghost-btn {
+                font-size: 0.9rem;
+                color: rgba(245,242,237,0.6);
+                border-bottom: 1px solid rgba(245,242,237,0.25);
+                padding-bottom: 2px;
+                transition: color 0.2s, border-color 0.2s;
+            }
+            .pro-ghost-btn:hover { color: var(--white); border-color: rgba(245,242,237,0.6); }
+
+            /* Section headline */
+            .pro-section-headline {
+                font-family: 'Syne', sans-serif;
+                font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+                font-weight: 700;
+                line-height: 1.1;
+                max-width: 620px;
+                margin-bottom: 3rem;
+            }
+
+            /* Features */
+            .pro-features {
+                padding: 6rem 3rem;
+                background: var(--subtle);
+            }
+            .pro-features-inner {
+                max-width: 1100px;
+                margin: 0 auto;
+            }
+            .pro-feature-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            .pro-feature-card {
+                background: rgba(245,242,237,0.04);
+                border: 1px solid rgba(245,242,237,0.1);
+                border-radius: 16px;
+                padding: 2.5rem 2rem;
+                transition: border-color 0.2s, background 0.2s;
+            }
+            .pro-feature-card:hover {
+                border-color: rgba(200,245,98,0.3);
+                background: rgba(200,245,98,0.04);
+            }
+            .pro-feature-icon { color: var(--accent); margin-bottom: 1.2rem; }
+            .pro-feature-card h3 {
+                font-family: 'Syne', sans-serif;
+                font-size: 1.05rem;
+                font-weight: 600;
+                margin-bottom: 0.6rem;
+                color: var(--white);
+            }
+            .pro-feature-card p {
+                font-size: 0.875rem;
+                color: rgba(245,242,237,0.5);
+                line-height: 1.7;
+            }
+            @media (max-width: 768px) {
+                .pro-features { padding-left: 1.5rem; padding-right: 1.5rem; }
+                .pro-feature-grid { grid-template-columns: 1fr; }
+            }
+
+            /* Pricing */
+            .pro-pricing { padding: 6rem 3rem; }
+            .pro-pricing-inner { max-width: 1100px; margin: 0 auto; }
+            .pro-pricing-sub {
+                font-size: 0.9rem;
+                color: rgba(245,242,237,0.4);
+                margin-top: -2rem;
+                margin-bottom: 3rem;
+            }
+            .pro-pricing-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 1rem;
+            }
+            .pro-pricing-card {
+                border: 1px solid rgba(245,242,237,0.1);
+                border-radius: 16px;
+                padding: 2rem 1.6rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                position: relative;
+                transition: border-color 0.2s, background 0.2s;
+            }
+            .pro-pricing-card:hover {
+                border-color: rgba(200,245,98,0.3);
+                background: rgba(200,245,98,0.02);
+            }
+            .pro-pricing-card--featured {
+                border-color: var(--accent);
+                background: rgba(200,245,98,0.04);
+            }
+            .pro-pricing-card--featured:hover { background: rgba(200,245,98,0.07); }
+            .pro-tier-badge {
+                position: absolute;
+                top: -12px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--accent);
+                color: var(--black);
+                font-size: 0.68rem;
+                font-weight: 600;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                padding: 3px 12px;
+                border-radius: 100px;
+                white-space: nowrap;
+            }
+            .pro-tier-name {
+                font-family: 'Syne', sans-serif;
+                font-size: 0.85rem;
+                font-weight: 600;
+                color: rgba(245,242,237,0.5);
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+            }
+            .pro-tier-price {
+                font-family: 'Syne', sans-serif;
+                font-size: 2.4rem;
+                font-weight: 800;
+                color: var(--white);
+                letter-spacing: -0.03em;
+                line-height: 1;
+                margin: 0.4rem 0;
+            }
+            .pro-tier-price span { font-size: 1rem; font-weight: 400; color: rgba(245,242,237,0.4); }
+            .pro-tier-seats { font-size: 0.82rem; color: var(--accent); margin-bottom: 0.8rem; }
+            .pro-tier-features { list-style: none; padding: 0; margin: 0 0 1.5rem; flex: 1; }
+            .pro-tier-features li {
+                font-size: 0.82rem;
+                color: rgba(245,242,237,0.5);
+                padding: 0.35rem 0 0.35rem 1.2rem;
+                border-bottom: 1px solid rgba(245,242,237,0.06);
+                position: relative;
+            }
+            .pro-tier-features li::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 5px;
+                height: 5px;
+                background: var(--accent);
+                border-radius: 50%;
+            }
+            .pro-tier-btn {
+                background: rgba(245,242,237,0.08);
+                color: var(--white);
+                border: 1px solid rgba(245,242,237,0.15);
+                font-family: 'DM Sans', sans-serif;
+                font-size: 0.85rem;
+                font-weight: 500;
+                padding: 0.8rem;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: background 0.2s, border-color 0.2s;
+                width: 100%;
+            }
+            .pro-tier-btn:hover { background: rgba(245,242,237,0.14); border-color: rgba(245,242,237,0.3); }
+            .pro-tier-btn--featured { background: var(--accent); color: var(--black); border-color: var(--accent); }
+            .pro-tier-btn--featured:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+            @media (max-width: 900px) {
+                .pro-pricing { padding-left: 1.5rem; padding-right: 1.5rem; }
+                .pro-pricing-grid { grid-template-columns: repeat(2, 1fr); }
+            }
+            @media (max-width: 540px) {
+                .pro-pricing-grid { grid-template-columns: 1fr; }
+            }
+
+            /* Auth modal */
+            .pro-modal-backdrop {
+                position: fixed;
+                inset: 0;
+                background: rgba(8,8,8,0.85);
+                z-index: 500;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 1.5rem;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.2s;
+            }
+            .pro-modal-backdrop.visible { opacity: 1; pointer-events: all; }
+            .pro-modal {
+                background: #111110;
+                border: 1px solid rgba(245,242,237,0.1);
+                border-radius: 16px;
+                padding: 2.5rem;
+                width: 100%;
+                max-width: 420px;
+                position: relative;
+            }
+            .pro-modal-close {
+                position: absolute;
+                top: 1.2rem;
+                right: 1.2rem;
+                background: none;
+                border: none;
+                color: rgba(245,242,237,0.4);
+                font-size: 1.4rem;
+                cursor: pointer;
+                line-height: 1;
+                transition: color 0.2s;
+                padding: 0.2rem 0.4rem;
+            }
+            .pro-modal-close:hover { color: var(--white); }
+            .pro-modal-title {
+                font-family: 'Syne', sans-serif;
+                font-size: 1.4rem;
+                font-weight: 700;
+                color: var(--white);
+                margin-bottom: 0.3rem;
+            }
+            .pro-modal-sub { font-size: 0.82rem; color: rgba(245,242,237,0.4); margin-bottom: 2rem; }
+            .pro-modal-form { display: flex; flex-direction: column; gap: 0.75rem; }
+            .pro-modal-form input {
+                background: rgba(245,242,237,0.06);
+                border: 1px solid rgba(245,242,237,0.12);
+                color: var(--white);
+                font-family: 'DM Sans', sans-serif;
+                font-size: 0.9rem;
+                padding: 0.9rem 1.2rem;
+                border-radius: 8px;
+                outline: none;
+                transition: border-color 0.2s;
+            }
+            .pro-modal-form input::placeholder { color: rgba(245,242,237,0.3); }
+            .pro-modal-form input:focus { border-color: rgba(200,245,98,0.5); }
+            .pro-auth-error { font-size: 0.8rem; color: #ff6b6b; min-height: 1.1rem; }
+            .pro-modal-submit {
+                background: var(--accent);
+                color: var(--black);
+                font-family: 'DM Sans', sans-serif;
+                font-size: 0.9rem;
+                font-weight: 500;
+                padding: 0.95rem;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: background 0.2s;
+                margin-top: 0.25rem;
+            }
+            .pro-modal-submit:hover { background: var(--accent-dark); }
+            .pro-auth-switch { margin-top: 1.5rem; font-size: 0.82rem; color: rgba(245,242,237,0.4); text-align: center; }
+            .pro-auth-switch-btn {
+                background: none;
+                border: none;
+                color: var(--accent);
+                font-family: 'DM Sans', sans-serif;
+                font-size: 0.82rem;
+                cursor: pointer;
+                padding: 0;
+                margin-left: 0.3rem;
+            }
+            .pro-auth-switch-btn:hover { text-decoration: underline; }
+            .pro-modal-spinner {
+                width: 36px;
+                height: 36px;
+                border: 2px solid rgba(245,242,237,0.1);
+                border-top-color: var(--accent);
+                border-radius: 50%;
+                animation: spin 0.7s linear infinite;
+                margin: 3rem auto;
+            }
+            @keyframes spin { to { transform: rotate(360deg); } }
+        </style>
     </head>
     <body>
 
@@ -42,7 +351,7 @@
             </h1>
 
             <p class="hero-sub">
-                Give every client a movement screen in their pocket. See their scores, fault patterns, and progress over time -- all from one dashboard.
+                Give every client a movement screen in their pocket. See their scores, fault patterns, and progress over time, all from one place.
             </p>
 
             <div class="pro-hero-actions">
@@ -63,21 +372,21 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                         </div>
                         <h3>Client roster</h3>
-                        <p>See every linked client at a glance -- latest score, last screen date, and top fault. Spot who needs attention before your next session.</p>
+                        <p>Every linked client in one list: latest score, last screen date, top fault. You can see at a glance who needs work before your next session.</p>
                     </div>
                     <div class="pro-feature-card">
                         <div class="pro-feature-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
                         </div>
                         <h3>Score trends</h3>
-                        <p>Track each client's movement score over time. See if your interventions are working or whether someone is quietly declining between sessions.</p>
+                        <p>Track each client's movement score over time. See if your work is paying off, or catch someone slipping before it becomes a problem.</p>
                     </div>
                     <div class="pro-feature-card">
                         <div class="pro-feature-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                         </div>
                         <h3>Fault breakdown</h3>
-                        <p>Drill into any screen result and see exactly which movement faults were detected -- knee cave, hip drop, forward lean, and 6 more -- with severity ratings.</p>
+                        <p>Drill into any screen result and see which faults were detected (knee cave, hip drop, forward lean, and 6 more), each rated by severity.</p>
                     </div>
                     <div class="pro-feature-card">
                         <div class="pro-feature-icon">
@@ -98,7 +407,6 @@
                 <p class="pro-pricing-sub">All plans include a 14-day free trial. Cancel any time.</p>
 
                 <div class="pro-pricing-grid">
-
                     <div class="pro-pricing-card" data-tier="starter">
                         <div class="pro-tier-name">Starter</div>
                         <div class="pro-tier-price">£29<span>/mo</span></div>
@@ -145,7 +453,6 @@
                         </ul>
                         <button class="pro-tier-btn" onclick="handlePlanSelect('club')">Start free trial</button>
                     </div>
-
                 </div>
             </div>
         </section>
@@ -206,7 +513,7 @@
         <script type="module">
             import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
             import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
-            import { getFirestore, doc, getDoc, query, collection, where, limit, getDocs } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+            import { getFirestore, query, collection, where, limit, getDocs } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
 
             const firebaseConfig = {
                 apiKey: 'AIzaSyAFHL0FWGGR395vL52t_CVQJre3SsxRlMY',
@@ -221,27 +528,17 @@
             const auth = getAuth(app);
             const db = getFirestore(app);
 
-            // The tier the user clicked before auth -- stored so we can redirect
-            // to Stripe checkout after they sign in or sign up.
             let pendingTier = null;
 
-            // --- Auth state ---
             onAuthStateChanged(auth, async (user) => {
                 if (!user) return;
-
-                // Signed in -- check if they already have an org.
                 const orgSnapshot = await getDocs(
                     query(collection(db, 'organisations'), where('ownerUid', '==', user.uid), limit(1))
                 );
-
                 if (!orgSnapshot.empty) {
-                    // Has an org -- go straight to dashboard.
                     window.location.href = '/pro/dashboard.html';
                     return;
                 }
-
-                // No org -- if they came from a pricing button, initiate checkout.
-                // Otherwise close the modal and let them pick a plan.
                 closeAuthModal();
                 if (pendingTier) {
                     initiateCheckout(pendingTier, user);
@@ -249,44 +546,33 @@
                 }
             });
 
-            // --- Modal helpers ---
             function openAuthModal(startOnSignUp = false) {
                 document.getElementById('auth-backdrop').classList.add('visible');
                 showView(startOnSignUp ? 'sign-up' : 'sign-in');
             }
-
             function closeAuthModal() {
                 document.getElementById('auth-backdrop').classList.remove('visible');
             }
-
             function showView(view) {
                 document.getElementById('auth-sign-in-view').style.display = view === 'sign-in' ? '' : 'none';
                 document.getElementById('auth-sign-up-view').style.display = view === 'sign-up' ? '' : 'none';
                 document.getElementById('auth-loading-view').style.display = view === 'loading' ? '' : 'none';
             }
-
             function setError(id, msg) {
                 document.getElementById(id).textContent = msg;
             }
-
             function friendlyError(code) {
                 switch (code) {
                     case 'auth/user-not-found':
                     case 'auth/wrong-password':
-                    case 'auth/invalid-credential':
-                        return 'Incorrect email or password.';
-                    case 'auth/email-already-in-use':
-                        return 'An account with this email already exists.';
-                    case 'auth/weak-password':
-                        return 'Password must be at least 8 characters.';
-                    case 'auth/invalid-email':
-                        return 'Please enter a valid email address.';
-                    default:
-                        return 'Something went wrong. Please try again.';
+                    case 'auth/invalid-credential': return 'Incorrect email or password.';
+                    case 'auth/email-already-in-use': return 'An account with this email already exists.';
+                    case 'auth/weak-password': return 'Password must be at least 8 characters.';
+                    case 'auth/invalid-email': return 'Please enter a valid email address.';
+                    default: return 'Something went wrong. Please try again.';
                 }
             }
 
-            // --- Sign in ---
             document.getElementById('signin-btn').addEventListener('click', async () => {
                 const email = document.getElementById('signin-email').value.trim();
                 const password = document.getElementById('signin-password').value;
@@ -295,14 +581,12 @@
                 showView('loading');
                 try {
                     await signInWithEmailAndPassword(auth, email, password);
-                    // onAuthStateChanged handles the redirect.
                 } catch (e) {
                     showView('sign-in');
                     setError('signin-error', friendlyError(e.code));
                 }
             });
 
-            // --- Sign up ---
             document.getElementById('signup-btn').addEventListener('click', async () => {
                 const name = document.getElementById('signup-name').value.trim();
                 const email = document.getElementById('signup-email').value.trim();
@@ -313,20 +597,16 @@
                 showView('loading');
                 try {
                     await createUserWithEmailAndPassword(auth, email, password);
-                    // onAuthStateChanged handles next steps.
                 } catch (e) {
                     showView('sign-up');
                     setError('signup-error', friendlyError(e.code));
                 }
             });
 
-            // --- Stripe checkout placeholder ---
-            // This will be replaced with a real Cloud Function call once Stripe is wired up.
             async function initiateCheckout(tier, user) {
                 alert(`Stripe checkout for tier "${tier}" coming soon. You are signed in as ${user.email}.`);
             }
 
-            // --- Plan selection ---
             window.handlePlanSelect = function(tier) {
                 const user = auth.currentUser;
                 if (!user) {
@@ -337,22 +617,16 @@
                 initiateCheckout(tier, user);
             };
 
-            // --- Button wiring ---
             document.getElementById('hero-get-started').addEventListener('click', () => {
                 const user = auth.currentUser;
-                if (user) {
-                    window.location.href = '/pro/dashboard.html';
-                } else {
-                    openAuthModal(true);
-                }
+                if (user) { window.location.href = '/pro/dashboard.html'; }
+                else { openAuthModal(true); }
             });
-
             document.getElementById('nav-signin-btn').addEventListener('click', () => openAuthModal(false));
             document.getElementById('auth-close').addEventListener('click', closeAuthModal);
             document.getElementById('auth-backdrop').addEventListener('click', (e) => {
                 if (e.target === document.getElementById('auth-backdrop')) closeAuthModal();
             });
-
             document.getElementById('switch-to-signup').addEventListener('click', () => showView('sign-up'));
             document.getElementById('switch-to-signin').addEventListener('click', () => showView('sign-in'));
         </script>
