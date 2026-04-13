@@ -125,7 +125,7 @@
             }
             .pro-pricing-grid {
                 display: grid;
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: repeat(5, 1fr);
                 gap: 1rem;
             }
             .pro-pricing-card {
@@ -216,6 +216,38 @@
             .pro-tier-btn:hover { background: rgba(245,242,237,0.14); border-color: rgba(245,242,237,0.3); }
             .pro-tier-btn--featured { background: var(--accent); color: var(--black); border-color: var(--accent); }
             .pro-tier-btn--featured:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+            .pro-pricing-card--enterprise {
+                border-color: rgba(245,242,237,0.15);
+                background: rgba(245,242,237,0.02);
+            }
+            .pro-pricing-card--enterprise:hover {
+                border-color: rgba(245,242,237,0.3);
+                background: rgba(245,242,237,0.04);
+            }
+            .pro-tier-price-custom {
+                font-family: 'Syne', sans-serif;
+                font-size: 2rem;
+                font-weight: 800;
+                color: var(--white);
+                letter-spacing: -0.03em;
+                line-height: 1;
+                margin: 0.4rem 0 0.8rem;
+            }
+            .pro-tier-btn--enterprise {
+                display: block;
+                text-align: center;
+                text-decoration: none;
+                background: rgba(245,242,237,0.08);
+                color: var(--white);
+                border: 1px solid rgba(245,242,237,0.2);
+            }
+            .pro-tier-btn--enterprise:hover {
+                background: rgba(245,242,237,0.14);
+                border-color: rgba(245,242,237,0.35);
+            }
+            @media (max-width: 1100px) {
+                .pro-pricing-grid { grid-template-columns: repeat(3, 1fr); }
+            }
             @media (max-width: 900px) {
                 .pro-pricing { padding-left: 1.5rem; padding-right: 1.5rem; }
                 .pro-pricing-grid { grid-template-columns: repeat(2, 1fr); }
@@ -446,12 +478,25 @@
                     <div class="pro-pricing-card" data-tier="club">
                         <div class="pro-tier-name">Club</div>
                         <div class="pro-tier-price">£249<span>/mo</span></div>
-                        <div class="pro-tier-seats">Unlimited clients</div>
+                        <div class="pro-tier-seats">Up to 250 clients</div>
                         <ul class="pro-tier-features">
                             <li>Everything in Team</li>
-                            <li>For large organisations</li>
+                            <li>For large clubs</li>
                         </ul>
                         <button class="pro-tier-btn" onclick="handlePlanSelect('club')">Start free trial</button>
+                    </div>
+
+                    <div class="pro-pricing-card pro-pricing-card--enterprise" data-tier="enterprise">
+                        <div class="pro-tier-name">Enterprise</div>
+                        <div class="pro-tier-price-custom">Custom</div>
+                        <div class="pro-tier-seats">250+ clients</div>
+                        <ul class="pro-tier-features">
+                            <li>Everything in Club</li>
+                            <li>Unlimited seats</li>
+                            <li>Dedicated support</li>
+                            <li>Custom contract</li>
+                        </ul>
+                        <a class="pro-tier-btn pro-tier-btn--enterprise" href="mailto:hello@getpoise.app?subject=Enterprise enquiry">Get in touch</a>
                     </div>
                 </div>
             </div>
