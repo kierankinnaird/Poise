@@ -559,6 +559,7 @@
             import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
             import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
             import { getFirestore, query, collection, where, limit, getDocs } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+            import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-functions.js';
 
             const firebaseConfig = {
                 apiKey: 'AIzaSyAFHL0FWGGR395vL52t_CVQJre3SsxRlMY',
@@ -572,8 +573,10 @@
             const app = initializeApp(firebaseConfig);
             const auth = getAuth(app);
             const db = getFirestore(app);
+            const fns = getFunctions(app, 'us-central1');
 
             let pendingTier = null;
+            let pendingOrgName = null;
 
             onAuthStateChanged(auth, async (user) => {
                 if (!user) return;
@@ -586,8 +589,9 @@
                 }
                 closeAuthModal();
                 if (pendingTier) {
-                    initiateCheckout(pendingTier, user);
+                    initiateCheckout(pendingTier, pendingOrgName, user);
                     pendingTier = null;
+                    pendingOrgName = null;
                 }
             });
 
@@ -641,15 +645,27 @@
                 if (password.length < 8) { setError('signup-error', 'Password must be at least 8 characters.'); return; }
                 showView('loading');
                 try {
+                    pendingOrgName = name;
                     await createUserWithEmailAndPassword(auth, email, password);
                 } catch (e) {
+                    pendingOrgName = null;
                     showView('sign-up');
                     setError('signup-error', friendlyError(e.code));
                 }
             });
 
-            async function initiateCheckout(tier, user) {
-                alert(`Stripe checkout for tier "${tier}" coming soon. You are signed in as ${user.email}.`);
+            async function initiateCheckout(tier, orgName, user) {
+                showView('loading');
+                document.getElementById('auth-backdrop').classList.add('visible');
+                try {
+                    const createSession = httpsCallable(fns, 'createCheckoutSession');
+                    const result = await createSession({ tier, orgName: orgName || user.email });
+                    window.location.href = result.data.url;
+                } catch (e) {
+                    console.error('Checkout error:', e);
+                    closeAuthModal();
+                    alert('Could not start checkout. Please try again.');
+                }
             }
 
             window.handlePlanSelect = function(tier) {
@@ -659,7 +675,7 @@
                     openAuthModal(true);
                     return;
                 }
-                initiateCheckout(tier, user);
+                initiateCheckout(tier, null, user);
             };
 
             document.getElementById('hero-get-started').addEventListener('click', () => {

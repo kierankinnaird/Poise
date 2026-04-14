@@ -27,6 +27,7 @@
                     <span id="referral-code-label">--</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
                 </button>
+                <button class="dash-signout-btn" id="billing-btn">Billing</button>
                 <button class="dash-signout-btn" id="signout-btn">Sign out</button>
             </div>
         </nav>
@@ -96,6 +97,7 @@
             import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
             import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
             import { getFirestore, collection, query, where, limit, getDocs, orderBy } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+            import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-functions.js';
 
             const firebaseConfig = {
                 apiKey: 'AIzaSyAFHL0FWGGR395vL52t_CVQJre3SsxRlMY',
@@ -109,6 +111,7 @@
             const app = initializeApp(firebaseConfig);
             const auth = getAuth(app);
             const db = getFirestore(app);
+            const fns = getFunctions(app, 'us-central1');
 
             let currentOrg = null;
             let membersCache = [];
@@ -355,6 +358,23 @@
                 document.getElementById('dash-detail').style.display = 'none';
                 document.getElementById('dash-main').style.display = '';
                 if (scoreChart) { scoreChart.destroy(); scoreChart = null; }
+            });
+
+            // --- Billing portal ---
+            document.getElementById('billing-btn').addEventListener('click', async () => {
+                const btn = document.getElementById('billing-btn');
+                btn.textContent = 'Loading...';
+                btn.disabled = true;
+                try {
+                    const createPortal = httpsCallable(fns, 'createPortalSession');
+                    const result = await createPortal({});
+                    window.location.href = result.data.url;
+                } catch (e) {
+                    console.error('Portal error:', e);
+                    btn.textContent = 'Billing';
+                    btn.disabled = false;
+                    alert('Could not open billing portal. Please try again.');
+                }
             });
 
             // --- Sign out ---
