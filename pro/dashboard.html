@@ -32,6 +32,12 @@
             </div>
         </nav>
 
+        <!-- Practitioner disclaimer banner -->
+        <div style="background: rgba(200,245,98,0.05); border-bottom: 1px solid rgba(200,245,98,0.15); padding: 0.75rem 2rem; font-size: 0.75rem; color: rgba(245,242,237,0.4); line-height: 1.6;">
+            <strong style="color: rgba(245,242,237,0.55);">Professional use notice:</strong>
+            Poise is a technical auditing tool. MQI scores are biomechanical estimates based on NSCA performance benchmarks and are not a substitute for your independent clinical judgement. You must verify and acknowledge AI-generated technical notes before incorporating them into a clinical treatment plan.
+        </div>
+
         <!-- Loading state -->
         <div class="dash-loading" id="dash-loading">
             <div class="pro-modal-spinner"></div>
@@ -57,9 +63,9 @@
                     <thead>
                         <tr>
                             <th>Client</th>
-                            <th>Latest score</th>
-                            <th>Last screen</th>
-                            <th>Top fault</th>
+                            <th>Latest MQI</th>
+                            <th>Last audit</th>
+                            <th>Top technical note</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -82,7 +88,7 @@
 
             <!-- Score trend chart -->
             <div class="dash-card">
-                <p class="dash-card-label">SCORE OVER TIME</p>
+                <p class="dash-card-label">MQI OVER TIME</p>
                 <div class="dash-chart-wrap">
                     <canvas id="score-chart"></canvas>
                 </div>
@@ -96,7 +102,7 @@
         <script type="module">
             import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
             import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
-            import { getFirestore, collection, query, where, limit, getDocs, orderBy } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+            import { getFirestore, collection, query, where, limit, getDocs, orderBy, doc, updateDoc } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
             import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-functions.js';
 
             const firebaseConfig = {
@@ -200,7 +206,7 @@
 
                 const count = members.length;
                 document.getElementById('member-count-label').textContent =
-                    `${count} client${count !== 1 ? 's' : ''} linked`;
+                    `${count} client${count !== 1 ? 's' : ''} linked -- movement audit data`;
 
                 if (count === 0) {
                     document.getElementById('dash-empty').style.display = '';
@@ -247,7 +253,9 @@
                 document.getElementById('detail-screens').innerHTML = '<div class="dash-loading-inline"><div class="pro-modal-spinner" style="width:24px;height:24px;margin:2rem auto"></div></div>';
 
                 const member = membersCache.find(m => m.uid === uid);
-                document.getElementById('detail-name').textContent = member?.displayName || 'Unknown';
+                const nameEl = document.getElementById('detail-name');
+                nameEl.textContent = member?.displayName || 'Unknown';
+                nameEl.dataset.uid = uid;
 
                 const screenSnap = await getDocs(
                     query(
@@ -256,7 +264,7 @@
                     )
                 );
 
-                const screens = screenSnap.docs.map(d => d.data());
+                const screens = screenSnap.docs.map(d => ({ id: d.id, ...d.data() }));
                 document.getElementById('detail-meta').textContent =
                     `${screens.length} screen${screens.length !== 1 ? 's' : ''}`;
 
@@ -316,7 +324,7 @@
                     return;
                 }
 
-                container.innerHTML = screens.map(s => {
+                container.innerHTML = screens.map((s, i) => {
                     const faults = s.faults ?? [];
                     const faultHtml = faults.length === 0
                         ? '<span class="dash-no-faults">No faults detected</span>'
@@ -326,8 +334,16 @@
                             </span>
                         `).join('');
 
+                    const isAcknowledged = !!s.acknowledgedAt;
+                    const ackLabel = isAcknowledged
+                        ? `Acknowledged ${formatDate(s.acknowledgedAt)}`
+                        : 'Acknowledge findings';
+                    const ackStyle = isAcknowledged
+                        ? 'background:rgba(200,245,98,0.08);color:rgba(200,245,98,0.6);border-color:rgba(200,245,98,0.2);cursor:default;'
+                        : 'background:rgba(245,242,237,0.05);color:rgba(245,242,237,0.45);border-color:rgba(245,242,237,0.12);cursor:pointer;';
+
                     return `
-                        <div class="dash-screen-card">
+                        <div class="dash-screen-card" id="screen-card-${i}">
                             <div class="dash-screen-header">
                                 <div>
                                     <span class="dash-screen-type">${s.movementType ?? 'Full screen'}</span>
@@ -336,9 +352,53 @@
                                 <span class="dash-screen-score" style="color:${scoreColor(s.score ?? 0)}">${s.score ?? '--'}</span>
                             </div>
                             <div class="dash-fault-row">${faultHtml}</div>
+                            <div style="margin-top:0.9rem;padding-top:0.9rem;border-top:1px solid rgba(245,242,237,0.06);display:flex;align-items:center;gap:0.75rem;">
+                                <button
+                                    class="dash-ack-btn"
+                                    data-idx="${i}"
+                                    ${isAcknowledged ? 'disabled' : ''}
+                                    style="font-size:0.75rem;font-family:'DM Sans',sans-serif;padding:0.45rem 1rem;border-radius:6px;border:1px solid;transition:background 0.2s;${ackStyle}"
+                                >${ackLabel}</button>
+                                ${isAcknowledged ? '' : '<span style="font-size:0.72rem;color:rgba(245,242,237,0.25);">Confirm you have reviewed these technical notes with your own clinical judgement.</span>'}
+                            </div>
                         </div>
                     `;
                 }).join('');
+
+                // Wire up acknowledge buttons.
+                document.querySelectorAll('.dash-ack-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const idx = parseInt(btn.dataset.idx, 10);
+                        const screen = screens[idx];
+                        const clientUid = document.getElementById('detail-name').dataset.uid;
+                        if (!screen?.id || !clientUid) return;
+
+                        btn.disabled = true;
+                        btn.textContent = 'Saving...';
+
+                        try {
+                            await updateDoc(
+                                doc(db, 'users', clientUid, 'screens', screen.id),
+                                {
+                                    acknowledgedBy: currentOrg.ownerUid,
+                                    acknowledgedByOrg: currentOrg.id,
+                                    acknowledgedAt: new Date(),
+                                }
+                            );
+                            const now = new Date();
+                            btn.textContent = `Acknowledged ${formatDate({ toDate: () => now })}`;
+                            btn.style.cssText = 'font-size:0.75rem;font-family:\'DM Sans\',sans-serif;padding:0.45rem 1rem;border-radius:6px;border:1px solid;background:rgba(200,245,98,0.08);color:rgba(200,245,98,0.6);border-color:rgba(200,245,98,0.2);cursor:default;';
+                            // Remove the instructional note next to this button.
+                            const note = btn.nextElementSibling;
+                            if (note) note.remove();
+                        } catch (e) {
+                            console.error('Acknowledge error:', e);
+                            btn.disabled = false;
+                            btn.textContent = 'Acknowledge findings';
+                            btn.style.cssText = 'font-size:0.75rem;font-family:\'DM Sans\',sans-serif;padding:0.45rem 1rem;border-radius:6px;border:1px solid;background:rgba(245,242,237,0.05);color:rgba(245,242,237,0.45);border-color:rgba(245,242,237,0.12);cursor:pointer;';
+                        }
+                    });
+                });
             }
 
             // --- Copy referral code ---

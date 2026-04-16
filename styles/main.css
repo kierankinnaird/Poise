@@ -805,6 +805,15 @@ footer {
     color: rgba(245, 242, 237, 0.25);
 }
 
+.footer-disclaimer {
+    font-size: 0.72rem;
+    color: rgba(245, 242, 237, 0.2);
+    max-width: 680px;
+    text-align: center;
+    line-height: 1.6;
+    margin-top: 0.75rem;
+}
+
 /* CTA bottom mobile */
 @media (max-width: 768px) {
     .cta-bottom {
