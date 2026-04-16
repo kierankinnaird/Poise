@@ -3,41 +3,36 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Poise | Free Sports Movement Screening App</title>
-        <meta name="description" content="Screen your movement with your phone camera and get a personalised corrective movement plan. Understand your movement quality based on performance benchmarks. Free for amateur and semi-pro athletes.">
+        <title>Poise | Movement Audit Tool for Clinicians and Coaches</title>
+        <meta name="description" content="Give your clients a 10-minute at-home movement audit before their appointment. Objective biomechanical data in your dashboard before they walk through the door.">
         <meta name="robots" content="index, follow">
         <link rel="canonical" href="https://getpoise.app/">
 
         <!-- Open Graph -->
         <meta property="og:type" content="website">
         <meta property="og:url" content="https://getpoise.app/">
-        <meta property="og:title" content="Poise | Free Sports Movement Screening App">
-        <meta property="og:description" content="Screen your movement with your phone camera and get a personalised corrective movement plan. Understand your movement quality based on performance benchmarks.">
+        <meta property="og:title" content="Poise | Movement Audit Tool for Clinicians and Coaches">
+        <meta property="og:description" content="Give your clients a 10-minute at-home movement audit before their appointment. Objective biomechanical data in your dashboard before they walk through the door.">
         <meta property="og:image" content="https://getpoise.app/images/Poise_logo.png">
         <meta property="og:site_name" content="Poise">
         <meta property="og:locale" content="en_GB">
 
         <!-- Twitter Card -->
         <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="Poise | Free Sports Movement Screening App">
-        <meta name="twitter:description" content="Screen your movement with your phone camera and get a personalised corrective movement plan. Understand your movement quality based on performance benchmarks.">
+        <meta name="twitter:title" content="Poise | Movement Audit Tool for Clinicians and Coaches">
+        <meta name="twitter:description" content="Give your clients a 10-minute at-home movement audit before their appointment. Objective biomechanical data in your dashboard before they walk through the door.">
         <meta name="twitter:image" content="https://getpoise.app/images/Poise_logo.png">
 
         <!-- Structured Data -->
         <script type="application/ld+json">
         {
             "@context": "https://schema.org",
-            "@type": "MobileApplication",
+            "@type": "SoftwareApplication",
             "name": "Poise",
             "url": "https://getpoise.app/",
-            "description": "Poise screens your movement using your phone camera and builds a personalised corrective movement plan based on your technical profile.",
-            "applicationCategory": "SportsApplication",
-            "operatingSystem": "iOS, Android",
-            "offers": {
-                "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "GBP"
-            },
+            "description": "Poise is a clinical decision support tool that captures biomechanical baselines from clients at home and delivers objective movement data to practitioners before appointments.",
+            "applicationCategory": "HealthApplication",
+            "operatingSystem": "iOS",
             "publisher": {
                 "@type": "Organization",
                 "name": "Poise",
@@ -65,8 +60,8 @@
     <body>
 
         <!-- Cursor -->
-         <div class="cursor" id="cursor"></div>
-         <div class="cursor-ring" id="cursor-ring"></div>
+        <div class="cursor" id="cursor"></div>
+        <div class="cursor-ring" id="cursor-ring"></div>
 
         <!-- Nav -->
         <nav id="nav">
@@ -75,7 +70,7 @@
                 <a href="https://linkedin.com/company/poiseapp" target="_blank" rel="noopener" class="nav-linkedin" aria-label="Poise on LinkedIn">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                 </a>
-                <a href="#cta" class="nav-cta">Join Waitlist</a>
+                <a href="/pro/" class="nav-cta">Start free trial</a>
             </div>
         </nav>
 
@@ -84,165 +79,246 @@
             <div class="hero-bg"></div>
             <div class="hero-grid"></div>
 
-            <p class="hero-tag">Sports movement quality</p>
+            <p class="hero-tag">Movement audit for clinicians</p>
 
             <h1 class="hero-headline">
-                Know your
-                <em>limits</em>
-                <span class="accent-word">before</span>
-                they find you.
+                Know your client's movement
+                <em>before</em>
+                <span class="accent-word">they walk</span>
+                through the door.
             </h1>
 
             <p class="hero-sub">
-                Poise screens your movement using your phone camera and builds a personalised corrective movement plan based on your technical profile, so you know exactly where to focus your training.
+                Poise captures a 10-minute biomechanical audit from your clients at home and delivers objective movement data to your dashboard before their appointment.
             </p>
 
-            <div class="hero-form" id="waitlist">
-                <input
-                    type="email"
-                    id="hero-email"
-                    placeholder="Your email address"
-                    autocomplete="off"
-                />
-                <label class="gdpr-label">
-                    <input type="checkbox" id="hero-gdpr" />
-                    <span>I agree to my data being stored and used to contact me about Poise.
-                    We will never share your data with third parties.</span>
-                </label>
-                <button onclick="handleSignup('hero-email', 'hero-success')">
-                    Join the waitlist →
-                </button>
+            <div class="hero-actions">
+                <a href="/pro/" class="hero-btn-primary">Set up your dashboard &rarr;</a>
+                <a href="#how" class="hero-btn-ghost">See how it works</a>
             </div>
-            <p class="hero-note">No spam. No credit card. Just early access.</p>
-            <p class="success-msg" id="hero-success">✓ You're on the list. We'll be in touch. </p>
-
-            <div class="waitlist-count">
-                <span>Join the founding cohort.</span>
-            </div>
+            <p class="hero-note">14-day free trial. No credit card required.</p>
         </section>
 
         <!-- Stats -->
         <div class="stats reveal" id="stats">
             <div class="stat-item">
-                <span class="stat-num">1 in 2<span>*</span></span>
-                <span class="stat-label">Recreational athletes injured per year (UK)</span>
+                <span class="stat-num">10<span>min</span></span>
+                <span class="stat-label">Full movement audit, completed at home</span>
             </div>
             <div class="stat-item">
-                <span class="stat-num">54<span>%</span></span>
-                <span class="stat-label">Of injuries are non-contact & preventable</span>
+                <span class="stat-num">5</span>
+                <span class="stat-label">Standardised movement patterns per audit</span>
             </div>
             <div class="stat-item">
-                <span class="stat-num">£150<span>+</span></span>
-                <span class="stat-label">Cost of a professional movement assessment</span>
+                <span class="stat-num">Pre<span>-appt</span></span>
+                <span class="stat-label">Data in your dashboard before the session</span>
             </div>
             <div class="stat-item">
                 <span class="stat-num">£0</span>
-                <span class="stat-label">Cost to screen with Poise</span>
+                <span class="stat-label">Equipment required by your clients</span>
             </div>
         </div>
 
-        <!-- Problem-->
+        <!-- Problem -->
         <section class="problem reveal" id="problem">
             <div>
                 <p class="section-tag">The problem</p>
-                <h2 class="problem-headline">Elite athletes get screened. You don't.</h2>
+                <h2 class="problem-headline">Your first appointment is already your third data point.</h2>
                 <p class="problem-body">
-                    Professional clubs have physios, movement analysts, and full screening protocols before every season. Amateur and semi-pro athletes who are just as motivated and training just as hard have nothing. Until now.
+                    Movement history relies on what clients can remember and describe. By the time someone is in front of you, weeks of technical data have already been lost. Poise captures an objective baseline before they even book.
                 </p>
             </div>
             <div class="problem-cards">
                 <div class="problem-card">
-                    <div class="card-icon">🏃</div>
-                    <div>
-                        <p class="card-title">You train blind</p>
-                        <p class="card-desc">Most athletes have no idea which movements need work. They train hard with no objective technical baseline to work from.</p>
-                    </div>
-                </div>
-                <div class="problem-card">
-                    <div class="card-icon">💸</div>
-                    <div>
-                        <p class="card-title">Professional screening is expensive</p>
-                        <p class="card-desc">A professional movement assessment costs £100 to £200 per session. Most amateur athletes simply skip it.</p>
-                    </div>
-                </div>
-                <div class="problem-card">
                     <div class="card-icon">📋</div>
                     <div>
-                        <p class="card-title">Generic advice doesn't cut it</p>
-                        <p class="card-desc">YouTube warm-ups and generic stretch routines aren't built around your body, your sport, or your weaknesses.</p>
+                        <p class="card-title">No pre-appointment baseline</p>
+                        <p class="card-desc">Without movement data before the first session, every intake starts from a blank sheet.</p>
+                    </div>
+                </div>
+                <div class="problem-card">
+                    <div class="card-icon">📉</div>
+                    <div>
+                        <p class="card-title">Between-session changes are invisible</p>
+                        <p class="card-desc">Weeks can pass between appointments. Without a logged baseline, movement changes go undetected until they become symptoms.</p>
+                    </div>
+                </div>
+                <div class="problem-card">
+                    <div class="card-icon">⏱️</div>
+                    <div>
+                        <p class="card-title">In-session screening eats appointment time</p>
+                        <p class="card-desc">Running standardised movement protocols in clinic is thorough but slow. Under time pressure, it gets rushed or skipped entirely.</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- How it works -->
-        
         <section class="how-section reveal" id="how">
             <div class="how">
                 <p class="section-tag">How it works</p>
                 <h2 class="how-headline">
-                    Three steps. Ten minutes. Your movement quality profile.
+                    Three steps. Client movement data before you even meet.
                 </h2>
                 <div class="steps">
                     <div class="step">
                         <div class="step-num">01</div>
-                        <h3 class="step-title">Set up your phone</h3>
+                        <h3 class="step-title">Send an audit invite</h3>
                         <p class="step-desc">
-                            Prop your phone up and follow the guided setup. No wearables, no equipment, no gym visit needed.
+                            Share your unique audit invite code with a client. They enter it in the Poise app on their phone and are linked to your dashboard instantly.
                         </p>
                     </div>
                     <div class="step">
                         <div class="step-num">02</div>
-                        <h3 class="step-title">Complete your screen</h3>
+                        <h3 class="step-title">Client audits at home</h3>
                         <p class="step-desc">
-                            Poise uses your camera to analyse your squat, balance, shoulder mobility, and movement patterns in real time.
+                            In around 10 minutes, Poise uses the phone camera to capture 5 standardised movement patterns. No equipment. No travel. No clinic visit required.
                         </p>
                     </div>
                     <div class="step">
                         <div class="step-num">03</div>
-                        <h3 class="step-title">Get your movement plan</h3>
+                        <h3 class="step-title">Data arrives before the appointment</h3>
                         <p class="step-desc">
-                            Receive a personalised corrective movement plan targeting your technical profile and rescreen monthly to track your progress.
+                            Movement Quality Index (MQI), technical notes, severity ratings, and session-over-session trends are waiting in your dashboard.
                         </p>
                     </div>
                 </div>
             </div>
-        </section> 
+        </section>
 
         <!-- Who it's for -->
         <section class="who reveal" id="who">
             <div class="who-inner">
                 <p class="section-tag">Who it's for</p>
-                <h2 class="who-headline">Built for serious amateur and semi-pro athletes.</h2>
+                <h2 class="who-headline">Built for the professionals making clinical decisions.</h2>
                 <div class="who-grid">
                     <div class="who-card">
-                        <div class="who-emoji">⚽</div>
+                        <div class="who-emoji">🏥</div>
                         <div class="who-text">
-                            <strong>Sunday league and 5-a-side</strong>
-                            Footballers who train hard but have no access to professional movement screening.
+                            <strong>Physiotherapists</strong>
+                            Objective pre-appointment baselines that support -- not replace -- your clinical assessment.
                         </div>
                     </div>
                     <div class="who-card">
-                        <div class="who-emoji">🏃‍♂️</div>
+                        <div class="who-emoji">🩺</div>
                         <div class="who-text">
-                            <strong>Runners and triathletes</strong>
-                            Training for their next race and tired of niggling injuries derailing their plan.
+                            <strong>Sports injury therapists</strong>
+                            Standardised technical data to identify movement deviations before hands-on assessment.
                         </div>
                     </div>
                     <div class="who-card">
-                        <div class="who-emoji">🏋️</div>
+                        <div class="who-emoji">💪</div>
                         <div class="who-text">
-                            <strong>CrossFit and gym athletes</strong>
-                            Lifting heavy and moving fast but with no objective movement data to work from.
+                            <strong>Strength and conditioning coaches</strong>
+                            Track movement quality across your squad and spot technical decline between sessions.
                         </div>
                     </div>
                     <div class="who-card">
-                        <div class="who-emoji">🏉</div>
+                        <div class="who-emoji">🏟️</div>
                         <div class="who-text">
-                            <strong>Rugby and contact sport players</strong>
-                            Semi-pro athletes who want pro-level preparation without the pro-level budget.
+                            <strong>Academies and clubs</strong>
+                            Screen multiple athletes efficiently with one dashboard and a single audit invite code.
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits for both sides -->
+        <section class="benefits reveal" id="benefits">
+            <div class="benefits-inner">
+                <p class="section-tag">Value on both sides</p>
+                <h2 class="benefits-headline">Better data for you. Better care for them.</h2>
+                <div class="benefits-split">
+
+                    <div class="benefits-side">
+                        <p class="benefits-side-title">For the practitioner</p>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            </div>
+                            <div class="benefit-text">
+                                <strong>Arrive prepared</strong>
+                                <p>Client movement data is in your dashboard before the appointment starts. No blank-sheet intakes.</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                            </div>
+                            <div class="benefit-text">
+                                <strong>Objective session-over-session baselines</strong>
+                                <p>MQI and technical notes you can compare across time, not just today's self-report.</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                            </div>
+                            <div class="benefit-text">
+                                <strong>No equipment required</strong>
+                                <p>Clients self-audit from home using only their phone. No wearables, no force plates, no clinic visit.</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            </div>
+                            <div class="benefit-text">
+                                <strong>Your clinical judgement stays central</strong>
+                                <p>Poise provides biomechanical estimates. All findings are for your review. Clinical decisions remain yours.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="benefits-side">
+                        <p class="benefits-side-title">For the client</p>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            </div>
+                            <div class="benefit-text">
+                                <strong>Active in their own care</strong>
+                                <p>Clients contribute meaningful movement data before stepping through your door.</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                            </div>
+                            <div class="benefit-text">
+                                <strong>No cost, no travel</strong>
+                                <p>A 10-minute movement audit completed at home, for free. No additional apps or equipment needed.</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                            </div>
+                            <div class="benefit-text">
+                                <strong>They see their own movement profile</strong>
+                                <p>Clients view their MQI and technical notes in the app, so they arrive informed and engaged.</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            </div>
+                            <div class="benefit-text">
+                                <strong>Better first appointments</strong>
+                                <p>Their practitioner arrives with objective data, not a blank intake form. Sessions start further ahead.</p>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -250,38 +326,29 @@
         <!-- Bottom CTA -->
         <section class="cta-bottom reveal" id="cta">
             <div class="cta-bottom-bg"></div>
-            <h2 class="cta-bottom-headline">Get early access.</h2>
+            <h2 class="cta-bottom-headline">Start your free trial.</h2>
             <p class="cta-bottom-sub">
-                Be among the first to screen with Poise and shape 
-                the product as we build it.
+                14 days free. No credit card. Cancel any time.
             </p>
-            <div class="cta-bottom-form">
-                <input
-                    type="email"
-                    id="bottom-email"
-                    placeholder="Your email address"
-                    autocomplete="off"
-                />
-                <label class="gdpr-label">
-                    <input type="checkbox" id="bottom-gdpr" />
-                    <span>I agree to my data being stored and used to contact me about Poise.
-                    We will never share your data with third parties.</span>
-                </label>
-                <button onclick="handleSignup('bottom-email', 'bottom-success')">
-                    Reserve my spot
-                </button>
-            </div>
-            <p class="success-msg" id="bottom-success">
-                ✓ You're on the list. We'll be in touch.
-            </p>
+            <a href="/pro/" class="cta-bottom-btn">Set up your dashboard &rarr;</a>
         </section>
 
-        <!-- Feedback -->
-        <section class="feedback reveal" id="feedback">
-            <p class="section-tag">Feedback</p>
-            <h2 class="feedback-headline">Help us build it right.</h2>
-            <p class="feedback-sub">Got two minutes? Tell us what you actually want. Your input shapes what we build next.</p>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdbvQH1C7bM01DqBk6PqBTpetfb0e7wR6LsToS_a5RvTAk-oQ/viewform?usp=dialog" target="_blank" rel="noopener" class="feedback-btn">Share feedback</a>
+        <!-- Client disclaimer -->
+        <section class="disclaimer reveal" id="disclaimer">
+            <div class="disclaimer-inner">
+                <p class="section-tag">For clients and practitioners</p>
+                <h2 class="disclaimer-headline">Where Poise fits in your workflow.</h2>
+                <div class="disclaimer-split">
+                    <div class="disclaimer-box">
+                        <p class="disclaimer-box-label">For clients</p>
+                        <p>This technical audit was requested by your professional provider. Poise provides biomechanical estimates based on NSCA performance standards. These results are data points for your provider's review and do not constitute a medical diagnosis or a physical therapy prescription.</p>
+                    </div>
+                    <div class="disclaimer-box">
+                        <p class="disclaimer-box-label">For practitioners</p>
+                        <p>Poise is a technical auditing tool. The Movement Quality Index (MQI) and all technical notes are estimates based on computer vision and NSCA performance benchmarks. They are not a substitute for your independent clinical judgement. All AI-generated findings must be verified by you before being incorporated into a clinical treatment plan.</p>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- Footer -->
@@ -292,13 +359,13 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                     LinkedIn
                 </a>
+                <a href="mailto:hello@getpoise.app" class="footer-privacy">Contact</a>
                 <a href="privacy/" class="footer-privacy">Privacy Policy</a>
             </div>
-            <p class="footer-copy">© 2026 Poise. All rights reserved.</p>
-            <p class="footer-disclaimer">Poise is a general wellness and performance tool. Movement Quality Index (MQI) scores are biomechanical estimates based on NSCA performance benchmarks and do not constitute a medical diagnosis, injury assessment, or clinical recommendation. Always consult a qualified professional for medical or rehabilitation advice.</p>
+            <p class="footer-copy">&copy; 2026 Poise. All rights reserved.</p>
+            <p class="footer-disclaimer">Poise is a clinical decision support tool. Movement Quality Index (MQI) scores are biomechanical estimates based on NSCA performance benchmarks and do not constitute a medical diagnosis, injury assessment, or clinical recommendation. A qualified professional must review and verify all findings before incorporating them into a clinical treatment plan.</p>
         </footer>
 
         <script src="scripts/main.js"></script>
-        <iframe name="hidden-iframe" style="display:none;"></iframe>
     </body>
 </html>
