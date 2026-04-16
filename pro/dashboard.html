@@ -21,10 +21,10 @@
             <a href="/" class="nav-logo">Poise<span>.</span></a>
             <div class="dash-nav-right">
                 <div class="dash-org-pill" id="org-pill">
-                    <span class="dash-org-name" id="org-name-label">--</span>
+                    <span class="dash-org-name" id="org-name-label">...</span>
                 </div>
                 <button class="dash-code-btn" id="copy-code-btn" title="Copy referral code">
-                    <span id="referral-code-label">--</span>
+                    <span id="referral-code-label">...</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
                 </button>
                 <button class="dash-signout-btn" id="billing-btn">Billing</button>
@@ -48,14 +48,14 @@
             <div class="dash-header">
                 <div>
                     <h1 class="dash-title">Your clients.</h1>
-                    <p class="dash-subtitle" id="member-count-label">-- clients linked</p>
+                    <p class="dash-subtitle" id="member-count-label">Loading...</p>
                 </div>
             </div>
 
             <div class="dash-empty" id="dash-empty" style="display:none">
                 <p class="dash-empty-title">No clients yet.</p>
                 <p class="dash-empty-sub">Share your referral code and ask clients to enter it in the Poise app under Profile.</p>
-                <div class="dash-empty-code" id="dash-empty-code">--</div>
+                <div class="dash-empty-code" id="dash-empty-code">...</div>
             </div>
 
             <div class="dash-table-wrap" id="dash-table-wrap">
@@ -82,8 +82,8 @@
             </button>
 
             <div class="dash-detail-header">
-                <h2 class="dash-detail-name" id="detail-name">--</h2>
-                <div class="dash-detail-meta" id="detail-meta">-- screens</div>
+                <h2 class="dash-detail-name" id="detail-name">...</h2>
+                <div class="dash-detail-meta" id="detail-meta">...</div>
             </div>
 
             <!-- Score trend chart -->
@@ -206,7 +206,7 @@
 
                 const count = members.length;
                 document.getElementById('member-count-label').textContent =
-                    `${count} client${count !== 1 ? 's' : ''} linked -- movement audit data`;
+                    `${count} client${count !== 1 ? 's' : ''} linked`;
 
                 if (count === 0) {
                     document.getElementById('dash-empty').style.display = '';
@@ -219,19 +219,19 @@
 
                 members.forEach((m) => {
                     const name = m.displayName || 'Unknown';
-                    const score = m.latest?.score ?? '--';
+                    const score = m.latest?.score ?? 'n/a';
                     const date = m.latest?.completedAt ? formatDate(m.latest.completedAt) : 'No screens yet';
                     const topFault = m.latest?.faults?.[0]
                         ? faultLabel(m.latest.faults[0].type)
-                        : '--';
+                        : 'n/a';
 
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td class="dash-td-name">${name}</td>
                         <td>
-                            ${score !== '--'
+                            ${score !== 'n/a'
                                 ? `<span class="dash-score-pill" style="color:${scoreColor(score)};border-color:${scoreColor(score)}20">${score}</span>`
-                                : `<span class="dash-muted">--</span>`
+                                : `<span class="dash-muted">n/a</span>`
                             }
                         </td>
                         <td class="dash-muted">${date}</td>
@@ -349,7 +349,7 @@
                                     <span class="dash-screen-type">${s.movementType ?? 'Full screen'}</span>
                                     <span class="dash-screen-date">${formatDate(s.completedAt)}</span>
                                 </div>
-                                <span class="dash-screen-score" style="color:${scoreColor(s.score ?? 0)}">${s.score ?? '--'}</span>
+                                <span class="dash-screen-score" style="color:${scoreColor(s.score ?? 0)}">${s.score ?? 'n/a'}</span>
                             </div>
                             <div class="dash-fault-row">${faultHtml}</div>
                             <div style="margin-top:0.9rem;padding-top:0.9rem;border-top:1px solid rgba(245,242,237,0.06);display:flex;align-items:center;gap:0.75rem;">
