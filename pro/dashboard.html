@@ -13,8 +13,16 @@
         <meta name="theme-color" content="#080808">
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+        <style>
+            @media (hover: hover) and (pointer: fine) {
+                *, *::before, *::after { cursor: none !important; }
+            }
+        </style>
     </head>
     <body>
+
+        <div class="cursor" id="cursor"></div>
+        <div class="cursor-ring" id="cursor-ring"></div>
 
         <!-- Nav -->
         <nav id="dash-nav">
@@ -443,5 +451,7 @@
                 window.location.href = '/pro/';
             });
         </script>
+
+        <script src="../scripts/main.js"></script>
     </body>
 </html>
