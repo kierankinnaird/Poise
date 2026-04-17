@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /pro/dashboard.html
 
 Sitemap: https://getpoise.app/sitemap.xml
